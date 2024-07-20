@@ -56,14 +56,14 @@
 }
 
 .button-container {
-  display: flex; /* Ensure buttons are laid out in a row */
+  display: flex; 
   justify-content: center;
 }
 
 .button-container .chapter-button:first-of-type {
-  margin-right: 10px; /* Add margin to the right of the first button */
+  margin-right: 10px; 
 }
 
 .button-container .chapter-button:last-of-type {
-  margin-left: 10px; /* Add margin to the left of the second button */
+  margin-left: 10px; 
 }

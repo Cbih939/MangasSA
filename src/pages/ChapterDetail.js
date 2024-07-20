@@ -30,16 +30,18 @@ const ChapterDetail = ({ chapters, id, setSelectedChapter }) => {
 
   }, [chapterId]);
 
+  const getCurrentChapterIndex = () => {
+    return chapters.findIndex(chap => chap.id === chapterId);
+  };
+
   const getNextChapter = () => {
-    const currentIndex = chapters.findIndex(chap => chap.id === chapterId);
-    const nextChapter = chapters[currentIndex + 1];
-    return nextChapter ? nextChapter.id : null;
+    const currentIndex = getCurrentChapterIndex();
+    return currentIndex < chapters.length - 1 ? chapters[currentIndex + 1].id : null;
   };
 
   const getPreviousChapter = () => {
-    const currentIndex = chapters.findIndex(chap => chap.id === chapterId);
-    const previousChapter = chapters[currentIndex - 1];
-    return previousChapter ? previousChapter.id : null;
+    const currentIndex = getCurrentChapterIndex();
+    return currentIndex > 0 ? chapters[currentIndex - 1].id : null;
   };
 
   const handlePreviousChapter = () => {
@@ -60,8 +62,8 @@ const ChapterDetail = ({ chapters, id, setSelectedChapter }) => {
       localStorage.setItem(`lastReadChapter-${id}`, nextChapterId);
       document.getElementById('header').scrollIntoView({ behavior: 'smooth' });
     }
-
   };
+
 
   if (loading) {
 
