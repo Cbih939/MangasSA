@@ -24,7 +24,9 @@ const MangaRead = () => {
         });
         setChapters(response.data.data);
         if (response.data.data.length > 0) {
-          setSelectedChapter(response.data.data[0].id);
+          const firstChapterId = response.data.data[0].id;
+          setSelectedChapter(firstChapterId);
+          navigate(`/manga/${id}/read/${firstChapterId}`);
         }
       } catch (error) {
         console.error('Error fetching chapters:', error);
