@@ -1,0 +1,47 @@
+.manga-read {
+  padding: 20px;
+  background-color: #141414;
+  color: white;
+}
+
+.manga-read h1 {
+  font-size: 2em;
+  color: #e50914;
+  text-align: center;
+}
+
+.chapter-select {
+  display: block;
+  margin: 20px auto;
+  padding: 10px;
+  background-color: #282828;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2em;
+}
+
+.chapter-detail {
+  margin-top: 20px;
+  padding: 20px;
+  background-color: #1c1c1c;
+  border-radius: 10px;
+}
+
+.chapter-detail h2 {
+  font-size: 1.5em;
+  color: #e50914;
+  text-align: center;
+}
+
+.chapter-pages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.chapter-page {
+  width: 100%;
+  max-width: 800px;
+  margin-bottom: 20px;
+}
