@@ -45,3 +45,25 @@
   max-width: 800px;
   margin-bottom: 20px;
 }
+
+.chapter-button {
+  padding: 10px 20px;
+  background-color: #e50914;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.button-container {
+  display: flex; /* Ensure buttons are laid out in a row */
+  justify-content: center;
+}
+
+.button-container .chapter-button:first-of-type {
+  margin-right: 10px; /* Add margin to the right of the first button */
+}
+
+.button-container .chapter-button:last-of-type {
+  margin-left: 10px; /* Add margin to the left of the second button */
+}

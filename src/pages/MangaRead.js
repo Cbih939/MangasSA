@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
+import ChapterDetail from './ChapterDetail';
 import './MangaRead.css';
 
 const MangaRead = () => {
@@ -9,6 +10,7 @@ const MangaRead = () => {
   const [chapters, setChapters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedChapter, setSelectedChapter] = useState('');
+
 
   useEffect(() => {
     const fetchChapters = async () => {
@@ -22,9 +24,15 @@ const MangaRead = () => {
             }
           }
         });
+        const fetchedChapters = response.data.data;
         setChapters(response.data.data);
-        if (response.data.data.length > 0) {
-          setSelectedChapter(response.data.data[0].id);
+
+        const lastReadChapterId = localStorage.getItem(`lastReadChapter-${id}`);
+        const initialChapterId = lastReadChapterId || (fetchedChapters.length > 0 ? fetchedChapters[0].id : '');
+
+        if (initialChapterId) {
+          setSelectedChapter(initialChapterId);
+          navigate(`/manga/${id}/read/${initialChapterId}`);
         }
       } catch (error) {
         console.error('Error fetching chapters:', error);
@@ -34,12 +42,17 @@ const MangaRead = () => {
     };
 
     fetchChapters();
-  }, [id]);
+  }, [id, navigate]);
+
 
   const handleChapterChange = (event) => {
-    setSelectedChapter(event.target.value);
-    navigate(`/manga/${id}/read/${event.target.value}`);
+    const selectedChapterId = event.target.value;
+    setSelectedChapter(selectedChapterId);
+    localStorage.setItem(`lastReadChapter-${id}`, selectedChapterId);
+    navigate(`/manga/${id}/read/${selectedChapterId}`);
+
   };
+
 
   if (loading) {
     return <div>Carregando...</div>;
@@ -51,7 +64,7 @@ const MangaRead = () => {
 
   return (
     <div className="manga-read">
-      <h1>Capítulos</h1>
+      <h1 id="header">Capítulos</h1>
       <select value={selectedChapter} onChange={handleChapterChange} className="chapter-select">
         {chapters.map((chapter) => (
           <option key={chapter.id} value={chapter.id}>
@@ -60,61 +73,12 @@ const MangaRead = () => {
         ))}
       </select>
       <Routes>
-        <Route path=":chapterId" element={<ChapterDetail />} />
+        <Route path=":chapterId" element={<ChapterDetail chapters={chapters} id={id} setSelectedChapter={setSelectedChapter} />} />
       </Routes>
     </div>
   );
 };
 
-const ChapterDetail = () => {
-  const { chapterId } = useParams();
-  const [chapter, setChapter] = useState(null);
-  const [pages, setPages] = useState([]);
-  const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchChapter = async () => {
-      try {
-        const response = await axios.get(`https://api.mangadex.org/chapter/${chapterId}`);
-        setChapter(response.data.data);
-
-        const pagesResponse = await axios.get(`https://api.mangadex.org/at-home/server/${chapterId}`);
-        const baseUrl = pagesResponse.data.baseUrl;
-        const pageFiles = pagesResponse.data.chapter.data;
-        setPages(pageFiles.map(file => `${baseUrl}/data/${pagesResponse.data.chapter.hash}/${file}`));
-      } catch (error) {
-        console.error('Error fetching chapter:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchChapter();
-  }, [chapterId]);
-
-  if (loading) {
-    return <div>Carregando...</div>;
-  }
-
-  if (!chapter) {
-    return <div>Error loading chapter details.</div>;
-  }
-
-  return (
-    <div className="chapter-detail">
-      <h2>{chapter.attributes.title || `Chapter ${chapter.attributes.chapter}`}</h2>
-      <div className="chapter-pages">
-        {pages.map((page, index) => (
-          <img
-            key={index}
-            src={page}
-            alt={`Page ${index + 1}`}
-            className="chapter-page"
-          />
-        ))}
-      </div>
-    </div>
-  );
-};
 
 export default MangaRead;
