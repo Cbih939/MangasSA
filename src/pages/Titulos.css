@@ -1,0 +1,113 @@
+.titulos {
+    margin-top: 60px;
+    padding: 20px;
+    background-color: #141414;
+    color: white;
+  }
+  
+  .titulos h2 {
+    font-size: 2em;
+    color: #e50914;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .manga-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .manga-card {
+    background: #282828;
+    border: 1px solid #444;
+    width: 200px;
+    height: 300px;
+    perspective: 1000px;
+  }
+  
+  .manga-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+  }
+  
+  .manga-card:hover .manga-card-inner {
+    transform: rotateY(180deg);
+  }
+  
+  .manga-card-front, .manga-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+  }
+  
+  .manga-card-front img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .manga-card-back {
+    background-color: #1c1c1c;
+    color: white;
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow: hidden;
+  }
+  
+  .manga-card-back h3 {
+    margin-bottom: 10px;
+  }
+  
+  .manga-card-back p {
+    font-size: 0.9em;
+    color: #aaa;
+    margin-bottom: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 10;
+    -webkit-box-orient: vertical;
+  }
+  
+  .manga-card-back button {
+    padding: 10px 20px;
+    background-color: #e50914;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .pagination button {
+    background-color: #e50914;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+  }
+  
+  .pagination span {
+    color: white;
+    margin: 0 10px;
+  }
+  
