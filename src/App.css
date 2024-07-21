@@ -9,6 +9,7 @@ html, body {
 .App {
   text-align: center;
   margin-top: 60px; /* Adiciona margem superior para não sobrepor o menu */
+  margin-bottom: 60px; /* Adiciona margem inferior para o footer */
 }
 
 .content {

@@ -1,17 +1,32 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import './Mangas.css';
+import './Categoria.css';
 
-const Mangas = () => {
+const Categoria = () => {
+  const { categoryId } = useParams();
+  const [categoryName, setCategoryName] = useState('');
   const [mangas, setMangas] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [initialCharacter, setInitialCharacter] = useState('');
-  const navigate = useNavigate();
 
   const itemsPerPage = 24;
+
+  useEffect(() => {
+    const fetchCategoryName = async () => {
+      try {
+        const response = await axios.get('https://api.mangadex.org/manga/tag');
+        const category = response.data.data.find(cat => cat.id === categoryId);
+        if (category) {
+          setCategoryName(category.attributes.name['en']);
+        }
+      } catch (error) {
+        console.error('Error fetching category name:', error);
+      }
+    };
+
+    fetchCategoryName();
+  }, [categoryId]);
 
   useEffect(() => {
     const fetchMangas = async () => {
@@ -23,12 +38,10 @@ const Mangas = () => {
             offset: (currentPage - 1) * itemsPerPage,
             includes: ['cover_art'],
             availableTranslatedLanguage: ['pt-br'],
+            includedTags: [categoryId],
             order: {
               title: 'asc'
-            },
-            title: searchTerm,
-            // Adding initialCharacter filtering
-            ...(initialCharacter && { title: `${initialCharacter}%` })
+            }
           }
         });
 
@@ -41,7 +54,7 @@ const Mangas = () => {
     };
 
     fetchMangas();
-  }, [currentPage, searchTerm, initialCharacter]);
+  }, [categoryId, currentPage]);
 
   const getCoverUrl = (manga) => {
     const coverArt = manga.relationships.find(rel => rel.type === 'cover_art');
@@ -71,28 +84,9 @@ const Mangas = () => {
     setCurrentPage(newPage);
   };
 
-  const handleReadClick = (mangaId) => {
-    navigate(`/manga/${mangaId}/read`);
-  };
-
   return (
-    <div className="mangas">
-      <h2>Lista de Mangás</h2>
-      <div className="filters">
-        <input 
-          type="text" 
-          placeholder="Buscar por nome" 
-          value={searchTerm} 
-          onChange={(e) => setSearchTerm(e.target.value)} 
-        />
-        <input 
-          type="text" 
-          placeholder="Buscar por inicial" 
-          value={initialCharacter} 
-          onChange={(e) => setInitialCharacter(e.target.value)} 
-          maxLength="1"
-        />
-      </div>
+    <div className="categoria">
+      <h2>Categoria: {categoryName}</h2>
       {loading ? (
         <div>Loading...</div>
       ) : (
@@ -107,7 +101,6 @@ const Mangas = () => {
                   <div className="manga-card-back">
                     <h3>{getMangaTitle(manga)}</h3>
                     <p>{truncateText(getMangaDescription(manga), 150)}</p>
-                    <button type="button" onClick={() => handleReadClick(manga.id)}>Ler</button>
                   </div>
                 </div>
               </div>
@@ -124,4 +117,4 @@ const Mangas = () => {
   );
 };
 
-export default Mangas;
+export default Categoria;

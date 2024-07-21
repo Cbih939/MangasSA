@@ -1,6 +1,7 @@
 .home {
   margin-top: 60px;
   padding: 20px;
+  padding-bottom: 100px;
   background-color: #141414;
   color: white;
 }
@@ -107,4 +108,33 @@
 .pagination span {
   color: white;
   margin: 0 10px;
+}
+
+.main-container {
+  display: flex;
+}
+
+.categories {
+  width: 10%;
+  padding: 20px;
+  background-color: #282828;
+}
+
+.categories h2 {
+  color: #e50914;
+}
+
+.categories ul {
+  list-style: none;
+  padding: 0;
+}
+
+.categories li {
+  margin: 10px 0;
+  cursor: pointer;
+  color: white;
+}
+
+.categories li:hover {
+  text-decoration: underline;
 }

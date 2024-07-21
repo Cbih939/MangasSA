@@ -43,6 +43,24 @@ const MangaRead = () => {
     navigate(`/manga/${id}/read/${event.target.value}`);
   };
 
+  const handleNextChapter = () => {
+    const currentIndex = chapters.findIndex(chapter => chapter.id === selectedChapter);
+    if (currentIndex < chapters.length - 1) {
+      const nextChapterId = chapters[currentIndex + 1].id;
+      setSelectedChapter(nextChapterId);
+      navigate(`/manga/${id}/read/${nextChapterId}`);
+    }
+  };
+
+  const handlePreviousChapter = () => {
+    const currentIndex = chapters.findIndex(chapter => chapter.id === selectedChapter);
+    if (currentIndex > 0) {
+      const previousChapterId = chapters[currentIndex - 1].id;
+      setSelectedChapter(previousChapterId);
+      navigate(`/manga/${id}/read/${previousChapterId}`);
+    }
+  };
+
   if (loading) {
     return <div>Carregando...</div>;
   }
@@ -61,6 +79,14 @@ const MangaRead = () => {
           </option>
         ))}
       </select>
+      <div className="navigation-buttons">
+        <button onClick={handlePreviousChapter} disabled={chapters.findIndex(chapter => chapter.id === selectedChapter) === 0}>
+          Capítulo Anterior
+        </button>
+        <button onClick={handleNextChapter} disabled={chapters.findIndex(chapter => chapter.id === selectedChapter) === chapters.length - 1}>
+          Próximo Capítulo
+        </button>
+      </div>
       <Routes>
         <Route path=":chapterId" element={<ChapterDetail />} />
       </Routes>
@@ -73,6 +99,7 @@ const ChapterDetail = () => {
   const [chapter, setChapter] = useState(null);
   const [pages, setPages] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [currentPage, setCurrentPage] = useState(0);
 
   useEffect(() => {
     const fetchChapter = async () => {
@@ -94,6 +121,18 @@ const ChapterDetail = () => {
     fetchChapter();
   }, [chapterId]);
 
+  const handleNextPage = () => {
+    if (currentPage < pages.length - 1) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
   if (loading) {
     return <div>Carregando...</div>;
   }
@@ -105,15 +144,20 @@ const ChapterDetail = () => {
   return (
     <div className="chapter-detail">
       <h2>{chapter.attributes.title || `Chapter ${chapter.attributes.chapter}`}</h2>
-      <div className="chapter-pages">
-        {pages.map((page, index) => (
-          <img
-            key={index}
-            src={page}
-            alt={`Page ${index + 1}`}
-            className="chapter-page"
-          />
-        ))}
+      <div className="chapter-page-container">
+        <img
+          src={pages[currentPage]}
+          alt={`Page ${currentPage + 1}`}
+          className="chapter-page"
+        />
+      </div>
+      <div className="navigation-buttons">
+        <button onClick={handlePreviousPage} disabled={currentPage === 0}>
+          Página Anterior
+        </button>
+        <button onClick={handleNextPage} disabled={currentPage === pages.length - 1}>
+          Próxima Página
+        </button>
       </div>
     </div>
   );

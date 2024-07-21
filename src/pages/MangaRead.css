@@ -36,12 +36,35 @@
 
 .chapter-pages {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  overflow-x: scroll;
+  scroll-snap-type: x mandatory;
 }
 
 .chapter-page {
+  flex: 0 0 auto;
   width: 100%;
   max-width: 800px;
-  margin-bottom: 20px;
+  margin-right: 20px;
+  scroll-snap-align: center;
+}
+
+.navigation-buttons {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.navigation-buttons button {
+  padding: 10px 20px;
+  background-color: #e50914;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 10px;
+}
+
+.navigation-buttons button:disabled {
+  background-color: #555;
+  cursor: not-allowed;
 }

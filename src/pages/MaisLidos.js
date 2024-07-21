@@ -9,7 +9,7 @@ const MaisLidos = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const navigate = useNavigate();
 
-  const itemsPerPage = 20;
+  const itemsPerPage = 24;
 
   useEffect(() => {
     const fetchMangas = async () => {
